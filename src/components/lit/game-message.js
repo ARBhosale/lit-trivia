@@ -26,7 +26,7 @@ class GameMessage extends LitElement {
 
     get styles() {
         let weight = `font-weight: ${this.bold ? css`bold` : css`normal`};`;
-        let size = `font-size: ${this.big ? css`${constants.FONT_SIZE_BIG}` : css`inherit;`};`;
+        let size = `font-size: ${this.big ? css`${constants.SIZE_BIG}` : css`inherit;`};`;
         return `${weight}${size}`;
     }
 
