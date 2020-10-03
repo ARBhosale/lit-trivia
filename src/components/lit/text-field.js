@@ -68,18 +68,28 @@ export class TextField extends LitElement {
         this.value = $event.target.value;
     }
 
-    renderTextField() {
+    renderInputField() {
         return html`
-        <div class="text-field-container fade">
-            <input 
+        <input 
                 type="text"
                 placeholder="${this.placeholder}"
                 value="${this.value}"
                 @input="${this.setValue}"
                 @keyup="${($event) => { $event.keyCode === 13 && this.confirmEdit(); $event.keyCode === 27 && this.cancelEdit(); }}"
-            ></input>
-            <game-button @click="${this.confirmEdit}" value="ok"></game-button>
-            <game-button @click="${this.cancelEdit}" value="cancel"></game-button>
+            ></input>`;
+    }
+
+    renderActionButtons() {
+        return html`
+        <game-button @click="${this.confirmEdit}" value="ok"></game-button>
+        <game-button @click="${this.cancelEdit}" value="cancel"></game-button>`;
+    }
+
+    renderTextField() {
+        return html`
+        <div class="text-field-container fade">
+            ${this.renderInputField()}
+            ${this.renderActionButtons()}
         </div>
         `;
     }
