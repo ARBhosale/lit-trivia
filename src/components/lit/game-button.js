@@ -15,7 +15,7 @@ export class GameButton extends LitElement {
                 text-transform: uppercase;
                 cursor: pointer;
                 color: white;
-                background-color: #2196f3;
+                background-color: ${constants.ACTION_COLOR};
                 box-shadow: 0 0 4px #999;
                 outline: none;
             }
