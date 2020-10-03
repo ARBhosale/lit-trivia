@@ -42,5 +42,46 @@ export const constants = {
     text: "cat 3",
     code: 2
   },
+  ],
+  questions: [
+    {
+      text: 'question question question question question question question question question question ?',
+      options: [
+        { text: 'option option option 1', code: 1 },
+        { text: 'option option option 2', code: 2 },
+        { text: 'option option option 3', code: 3 },
+        { text: 'option option option 4', code: 4 },
+      ],
+      answer: 2
+    },
+    {
+      text: 'question question question question question question question question question question ?',
+      options: [
+        { text: 'option option option 1', code: 1 },
+        { text: 'option option option 2', code: 2 },
+        { text: 'option option option 3', code: 3 },
+        { text: 'option option option 4', code: 4 },
+      ],
+      answer: 2
+    },{
+      text: 'question question question question question question question question question question ?',
+      options: [
+        { text: 'option option option 1', code: 1 },
+        { text: 'option option option 2', code: 2 },
+        { text: 'option option option 3', code: 3 },
+        { text: 'option option option 4', code: 4 },
+      ],
+      answer: 2
+    },
+    {
+      text: 'question question question question question question question question question question ?',
+      options: [
+        { text: 'option option option 1', code: 1 },
+        { text: 'option option option 2', code: 2 },
+        { text: 'option option option 3', code: 3 },
+        { text: 'option option option 4', code: 4 },
+      ],
+      answer: 2
+    }
   ]
 }
