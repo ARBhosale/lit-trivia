@@ -18,6 +18,7 @@ export class TextField extends LitElement {
         return {
             placeholder: { attribute: true },
             disabled: { attribute: true },
+            label: { attribute: true },
             isEditing: { type: Boolean },
             value: { type: String },
             previousValue: { type: String },
@@ -55,16 +56,27 @@ export class TextField extends LitElement {
     }
 
     confirmEdit() {
+        if (this.value == '') {
+            return;
+        }
         this.previousValue = this.value;
         this.isEditing = false;
+        this.dispatchEvent(new CustomEvent('input', {
+            detail: { message: this.value },
+            bubbles: true,
+            composed: true
+        }));
     }
 
     cancelEdit() {
-        this.value = this.previousValue;
-        this.isEditing = false;
+        if (this.previousValue != '') {
+            this.isEditing = false;
+            this.value = this.previousValue;
+        }
     }
 
     setValue($event) {
+        $event.stopPropagation();
         this.value = $event.target.value;
     }
 
@@ -87,10 +99,11 @@ export class TextField extends LitElement {
 
     renderTextField() {
         return html`
+        ${this.label != undefined ? html`<div><game-message class="fade" text="${this.label}"/></div>` : ''}
         <div class="text-field-container fade">
             ${this.renderInputField()}
-            ${this.renderActionButtons()}
         </div>
+        <div style="margin-top: 16px;" >${this.renderActionButtons()}</div>
         `;
     }
 
