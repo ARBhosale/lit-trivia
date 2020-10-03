@@ -1,6 +1,6 @@
 import { html, css } from 'lit-element';
 import { TextField } from './text-field';
-import { constants } from '../../constants';
+import  './game-option';
 export class SelectField extends TextField {
     constructor() {
         super();
@@ -19,11 +19,11 @@ export class SelectField extends TextField {
         .text-field-container {
             align-items: baseline;
         }
-        .option-item {
-            padding: 8px;
-            background: #3cefd80f;
-            border-bottom: solid 1px ${constants.BORDER_COLOR};
-        }`;
+        .fade2 {
+            -webkit-animation: fade 1.2s;
+            animation: fade 1.2s;
+        }
+        `;
     }
 
     get listValues() {
@@ -56,14 +56,17 @@ export class SelectField extends TextField {
 
     renderOptions() {
         return html`
-        <div>
-            ${this.listValues.map(option => html`<div class="option-item" @click="${() => { this.selectOption(option); }}">${option.text}</div>`)}
+        <div class="fade fade2">
+            ${this.listValues.map(option =>
+            html`<game-option text="${option.text}" @click="${() => { this.selectOption(option); }}"></game-option>
+                `)}
         </div>
         `;
     }
 
     renderSelectField() {
         return html`
+        ${this.label != undefined ? html`<div><game-message class="fade" text="${this.label}"/></div>` : ''}
         <div class="text-field-container fade">
         <div>
             ${this.renderInputField()}
