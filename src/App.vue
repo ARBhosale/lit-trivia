@@ -2,7 +2,7 @@
 <div class="game-container">
     <div class="row">
         <game-card>
-            <text-field placeholder="Bond. James Bond." label="What should I call you?" @input="userName=$event.detail.message"></text-field>
+            <text-field label="What should I call you?" @input="userName=$event.detail.message"></text-field>
             <game-message v-if="correctCount>=0" :text="`Score: ${score}`" />
         </game-card>
         <game-card v-if="userName !=''">
@@ -11,21 +11,21 @@
     </div>
     <div class="row row2" v-if="correctCount>=0 && currentQuestionIndex < questions.length">
         <game-card v-for="(question, index) in questions" :key="index" v-show="index == currentQuestionIndex" class="slide">
-            <game-message class="fade" :text="`${index+1}. ${question.text}`" />
-            <game-option class="fade fade2" v-for="(option, index) in question.options" :key="index" :text="option.text" @click="selectOption(option)"></game-option>
+            <game-message class="fade" :text="`${index+1}. ${htmlDecode(question.text)}`" />
+            <game-option class="fade fade2" v-for="(option, index) in question.options" :key="index" :text="htmlDecode(option.text)" @click="selectOption(option)"></game-option>
+            <game-message v-if="correctAnswer" :text="`${htmlDecode(correctAnswer)}`" />
         </game-card>
     </div>
-    <div class="row" v-if="currentQuestionIndex >= questions.length">
+    <div class="row" v-if="correctCount>=0 && currentQuestionIndex >= questions.length">
         <game-card>
             <game-message class="fade" text="Quiz complete!" />
-            <game-button @click="restartGame" value="Restart"></game-button>
+            <game-button @click="initGame" value="Restart"></game-button>
         </game-card>
     </div>
 </div>
 </template>
 
 <script>
-// <select-field placeholder="ddd" :options="ss" @selection="onSelection" />
 import "./components/lit/game-button.js";
 import "./components/lit/game-message.js";
 import "./components/lit/text-field.js";
@@ -35,6 +35,9 @@ import "./components/lit/game-option.js";
 import {
     constants
 } from "./constants";
+import {
+    getQuestions
+} from "./trivia.service";
 export default {
     name: "App",
     data() {
@@ -43,8 +46,9 @@ export default {
             selectedCategory: null,
             categories: [...constants.categories],
             correctCount: -1,
-            questions: [...constants.questions],
-            currentQuestionIndex: 0
+            questions: [],
+            currentQuestionIndex: 0,
+            correctAnswer: null
         };
     },
     computed: {
@@ -54,24 +58,41 @@ export default {
     },
     methods: {
         startGame(category) {
-            if (this.selectedCategory == null) {
+            if (
+                this.selectedCategory == null ||
+                this.selectedCategory.code != category.code
+            ) {
                 this.selectedCategory = category;
-                this.correctCount = 0;
-                return;
-            }
-            if (this.selectedCategory.code != category.code) {
-                this.restartGame();
+                this.initGame();
             }
         },
         selectOption(option) {
-            if (option.code === this.questions[this.currentQuestionIndex].answer) {
+            let correctAnswerIndex = this.questions[this.currentQuestionIndex].answer;
+            if (option.code === correctAnswerIndex) {
                 this.correctCount++;
+                this.currentQuestionIndex++;
+            } else {
+                this.correctAnswer = this.questions[this.currentQuestionIndex].options[
+                    correctAnswerIndex
+                ].text;
+                setTimeout(() => {
+                    this.correctAnswer = null;
+                    this.currentQuestionIndex++;
+                }, 3000);
             }
-            this.currentQuestionIndex++;
         },
-        restartGame() {
-            this.correctCount = 0;
-            this.currentQuestionIndex = 0;
+        initGame() {
+            getQuestions(this.selectedCategory.code).then(questions => {
+                this.questions = questions;
+                this.correctCount = 0;
+                this.currentQuestionIndex = 0;
+            });
+        },
+        htmlDecode(input) {
+            var e = document.createElement("textarea");
+            e.innerHTML = input;
+            // handle case of empty input
+            return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
         }
     }
 };

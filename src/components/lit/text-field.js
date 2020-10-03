@@ -39,7 +39,7 @@ export class TextField extends LitElement {
             border-radius: 4px;
             outline-color: ${constants.BORDER_COLOR};
             text-align: center;
-            font-size: ${constants.SIZE_BIG};
+            font-size: 16px;
         }
         input:focus {
             outline-color: ${constants.FOCUS_COLOR};

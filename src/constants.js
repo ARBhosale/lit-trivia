@@ -31,16 +31,16 @@ export const constants = {
         to {opacity: 1}
     }`,
   categories: [{
-    text: "cat 1",
-    code: 1
+    text: "General Knowledge",
+    code: 9
   },
   {
-    text: "cat 2",
-    code: 2
+    text: "Computer Science",
+    code: 18
   },
   {
-    text: "cat 3",
-    code: 2
+    text: "Sports",
+    code: 21
   },
   ],
   questions: [
